@@ -8,8 +8,16 @@ import {
 } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 
+import { image500 } from '@/api/moviedb'
+import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+
 type TrendingMoviesProps = {
-  data: number[]
+  data: MoviesDataDTO[]
+}
+
+type MovieCardProps = {
+  item: MoviesDataDTO
+  handleClick: () => void
 }
 
 const { width, height } = Dimensions.get('window')
@@ -37,11 +45,11 @@ export function TrendingMovies({ data }: TrendingMoviesProps) {
   )
 }
 
-const MovieCard = ({ item, handleClick }) => {
+const MovieCard = ({ item, handleClick }: MovieCardProps) => {
   return (
     <TouchableNativeFeedback onPress={handleClick}>
       <Image
-        source={require('../assets/movieImage.png')}
+        source={{ uri: image500(item.poster_path) }}
         style={{ width: width * 0.6, height: height * 0.4 }}
         className="rounded-3xl"
       />

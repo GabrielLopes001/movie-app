@@ -9,19 +9,22 @@ import {
   View,
 } from 'react-native'
 
+import { image185 } from '@/api/moviedb'
+import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+
 type MovieListProps = {
-  title: string
-  data: number[]
+  titlePage: string
+  data: MoviesDataDTO[]
 }
 
 const { width, height } = Dimensions.get('window')
 
-export function MovieList({ title, data }: MovieListProps) {
+export function MovieList({ data, titlePage }: MovieListProps) {
   const navigation = useNavigation()
   return (
     <View className="mb-8 space-y-4">
       <View className="mx-4 flex-row justify-between">
-        <Text className="text-xl text-white">{title}</Text>
+        <Text className="text-xl text-white">{titlePage}</Text>
         <TouchableOpacity>
           <Text className="text-lg text-orange-400">See All</Text>
         </TouchableOpacity>
@@ -39,11 +42,15 @@ export function MovieList({ title, data }: MovieListProps) {
             >
               <View className="mr-4 space-y-1">
                 <Image
-                  source={require('../assets/movieImage.png')}
+                  source={{ uri: image185(item.poster_path) }}
                   style={{ width: width * 0.33, height: height * 0.22 }}
                   className="rounded-3xl"
                 />
-                <Text className="ml-1 text-neutral-500">Movie Name</Text>
+                <Text className="ml-1 text-neutral-500">
+                  {item.title.length > 14
+                    ? item.title.slice(0, 14) + '...'
+                    : item.title}
+                </Text>
               </View>
             </TouchableWithoutFeedback>
           )
