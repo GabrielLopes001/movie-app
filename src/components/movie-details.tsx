@@ -1,27 +1,41 @@
 import { Text, View } from 'react-native'
 
-export function MovieDetails() {
+type MovieDetailsProps = {
+  title: string
+  description: string
+  status: string
+  releasedData: string
+  duration: string
+  genres: string[]
+}
+
+export function MovieDetails({
+  title,
+  description,
+  status,
+  releasedData,
+  duration,
+  genres = [],
+}: MovieDetailsProps) {
   return (
     <View>
       <Text className="text-center text-3xl font-bold tracking-wider text-white">
-        Movie Name
+        {title}
       </Text>
       <Text className="text-center text-base font-semibold text-neutral-400">
-        Released
+        {status} / {releasedData} / {duration} min
       </Text>
-      <View className="mx-4 flex-row justify-center space-x-2">
-        <Text className="text-center text-base font-semibold text-neutral-400">
-          Action
-        </Text>
-        <Text className="text-center text-base font-semibold text-neutral-400">
-          Comedy
-        </Text>
-      </View>
+      {genres.map((genre, index) => {
+        return (
+          <View key={index} className="mx-4 flex-row justify-center space-x-2">
+            <Text className="text-center text-base font-semibold text-neutral-400">
+              {genre.name}
+            </Text>
+          </View>
+        )
+      })}
       <Text className="mx-4 text-center tracking-wide text-neutral-400">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, non
-        veniam nemo quae id voluptas magnam tempora cupiditate laudantium
-        laboriosam voluptatibus eaque pariatur recusandae fugiat obcaecati,
-        molestias quas. Amet, repudiandae!
+        {description}
       </Text>
     </View>
   )

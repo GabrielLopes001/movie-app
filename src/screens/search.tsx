@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   Dimensions,
   Image,
@@ -13,15 +13,33 @@ import {
 } from 'react-native'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 
+import { fetchSearchMovie, image342 } from '@/api/moviedb'
+
 const { width, height } = Dimensions.get('window')
 
 export function Search() {
-  const [results, setResults] = useState([1, 2, 3, 4])
+  const [results, setResults] = useState([])
   const navigation = useNavigation()
+
+  function handleSearch(value) {
+    if (value && value.length > 2) {
+      fetchSearchMovie({
+        query: value,
+        include_adult: false,
+        language: 'en-US',
+        page: 1,
+      }).then((data) => {
+        setResults(data.results)
+      })
+    }
+  }
+
+  const handleTextBounce = useCallback(handleSearch, [])
   return (
     <SafeAreaView className="flex-1 bg-neutral-800">
       <View className="mx-4 mb-3 flex-row items-center justify-between rounded-full border border-neutral-500">
         <TextInput
+          onChangeText={handleTextBounce}
           placeholder="Search Movie"
           placeholderTextColor={'lightgray'}
           className="flex-1 pb-1 pl-6 text-base font-semibold tracking-wide text-white"
@@ -47,15 +65,15 @@ export function Search() {
             {results.map((item, index) => {
               return (
                 <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate('movie')}
+                  onPress={() => navigation.navigate('movie', item)}
                   key={index}
                 >
                   <View className="mb-4 space-y-2">
                     <Image
-                      source={require('../assets/movieImage.png')}
+                      source={{ uri: image342(item.poster_path) }}
                       style={{ width: width * 0.44, height: height * 0.3 }}
                     />
-                    <Text className="ml-1 text-neutral-300">Movie Name</Text>
+                    <Text className="ml-1 text-neutral-300">{item.title}</Text>
                   </View>
                 </TouchableWithoutFeedback>
               )
