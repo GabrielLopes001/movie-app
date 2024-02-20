@@ -1,29 +1,24 @@
 import { Text, View } from 'react-native'
 
-type MovieDetailsProps = {
-  title: string
-  description: string
-  status: string
-  releasedData: string
-  duration: string
-  genres: string[]
-}
+import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+
+type MovieDetailsTest = MoviesDataDTO
 
 export function MovieDetails({
-  title,
-  description,
-  status,
-  releasedData,
-  duration,
   genres = [],
-}: MovieDetailsProps) {
+  overview,
+  releaseDate,
+  runtime,
+  status,
+  title,
+}: MovieDetailsTest) {
   return (
     <View>
       <Text className="text-center text-3xl font-bold tracking-wider text-white">
         {title}
       </Text>
       <Text className="text-center text-base font-semibold text-neutral-400">
-        {status} / {releasedData} / {duration} min
+        {status} / {releaseDate} / {runtime} min
       </Text>
       {genres.map((genre, index) => {
         return (
@@ -35,7 +30,7 @@ export function MovieDetails({
         )
       })}
       <Text className="mx-4 text-center tracking-wide text-neutral-400">
-        {description}
+        {overview}
       </Text>
     </View>
   )

@@ -16,6 +16,7 @@ import {
 import { MovieList } from '@/components/movie-list'
 import { TrendingMovies } from '@/components/trending-movies'
 import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { AppRoutesNavigationProps } from '@/routes'
 
 export function Home() {
   const [trending, setTrending] = useState<MoviesDataDTO[]>(
@@ -28,7 +29,7 @@ export function Home() {
     [] as MoviesDataDTO[],
   )
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<AppRoutesNavigationProps>()
 
   useEffect(() => {
     getTrendingMovies()

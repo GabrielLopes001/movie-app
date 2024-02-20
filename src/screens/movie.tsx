@@ -14,30 +14,30 @@ import { Header } from '@/components/header'
 import { MovieDetails } from '@/components/movie-details'
 import { MovieList } from '@/components/movie-list'
 import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { PersonDataDTO } from '@/dtos/movies/person-data-dtos'
+import { AppRoutesNavigationProps } from '@/routes'
 
 const { width, height } = Dimensions.get('window')
 
 export function Movie() {
   const { params: item } = useRoute()
-  const navigation = useNavigation()
-  const [cast, setCast] = useState([])
-  const [similarmovies, setSimilarmovies] = useState([])
-  const [movie, setMovie] = useState({})
+  const navigation: navigationPerson = useNavigation<AppRoutesNavigationProps>()
+  const [cast, setCast] = useState([] as PersonDataDTO[])
+  const [similarmovies, setSimilarmovies] = useState([] as MoviesDataDTO[])
+  const [movie, setMovie] = useState({} as MoviesDataDTO)
 
   useEffect(() => {
-    // console.log('item id', item?.id)
-    // console.log('genre0', item?.genres)
-    getMovieDetail(item.id)
-    getMovieCredits(item.id)
-    getSimilarMovies(item.id)
+    getMovieDetail(item?.id)
+    getMovieCredits(item?.id)
+    getSimilarMovies(item?.id)
   }, [item])
 
-  async function getMovieDetail(id) {
+  async function getMovieDetail(id: string) {
     const data = await fetchMovieDetails(id)
     if (data) setMovie(data)
   }
 
-  async function getMovieCredits(id) {
+  async function getMovieCredits(id: string) {
     const data = await fetchMovieCredits(id)
     if (data && data.cast) setCast(data.cast)
   }
@@ -59,8 +59,9 @@ export function Movie() {
         </SafeAreaView>
         <View>
           <Image
-            source={{ uri: image500(movie?.poster_path) }}
+            source={{ uri: image500(movie?.posterPath) }}
             style={{ width, height: height * 0.55 }}
+            alt="poster"
           />
           <LinearGradient
             colors={['transparent', 'rgba(23,23,23,0.8)', 'rgba(23,23,23,1)']}
@@ -75,10 +76,10 @@ export function Movie() {
       <View style={{ marginTop: -(height * 0.09) }} className="space-y-3">
         <MovieDetails
           title={movie?.title}
-          description={movie?.overview}
+          overview={movie?.overview}
           status={movie?.status}
-          releasedData={movie?.release_date?.split('-')[0]}
-          duration={movie?.runtime}
+          releaseDate={movie?.releaseDate?.split('-')[0]}
+          runtime={movie?.runtime}
           genres={movie?.genres}
         />
       </View>

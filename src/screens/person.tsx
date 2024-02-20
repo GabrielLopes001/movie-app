@@ -7,25 +7,27 @@ import { fetchPersonDetails, fetchPersonMovies, image342 } from '@/api/moviedb'
 import { ActorDetail } from '@/components/actor-detail'
 import { Header } from '@/components/header'
 import { MovieList } from '@/components/movie-list'
+import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { PersonDataDTO } from '@/dtos/movies/person-data-dtos'
 
 const { width, height } = Dimensions.get('window')
 
 export function Person() {
-  const [personMovies, setPersonMovies] = useState([])
-  const [person, setPerson] = useState({})
+  const [personMovies, setPersonMovies] = useState([] as MoviesDataDTO[])
+  const [person, setPerson] = useState({} as PersonDataDTO)
   const { params: item } = useRoute()
 
   useEffect(() => {
-    getPersonDetails(item.id)
-    getPersonMovies(item.id)
+    getPersonDetails(item?.id)
+    getPersonMovies(item?.id)
   }, [item])
 
-  async function getPersonDetails(id) {
+  async function getPersonDetails(id: string) {
     const data = await fetchPersonDetails(id)
     if (data) setPerson(data)
   }
 
-  async function getPersonMovies(id) {
+  async function getPersonMovies(id: string) {
     const data = await fetchPersonMovies(id)
     if (data && data.cast) setPersonMovies(data.cast)
   }
@@ -50,17 +52,18 @@ export function Person() {
       >
         <View className="h-72 w-72 items-center overflow-hidden rounded-full border border-neutral-400">
           <Image
-            source={{ uri: image342(person.profile_path) }}
+            source={{ uri: image342(person.profilePath) }}
             style={{ height: height * 0.43, width: width * 0.74 }}
+            alt="profile"
           />
         </View>
       </View>
 
       <ActorDetail
         name={person?.name}
-        place={person.place_of_birth}
+        placeOfBirth={person.placeOfBirth}
         popularity={person.popularity}
-        department={person.known_for_department}
+        knownForDepartment={person.knownForDepartment}
         birthday={person.birthday}
         biography={person.biography}
         gender={person.gender}

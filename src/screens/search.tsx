@@ -14,14 +14,16 @@ import {
 import { XMarkIcon } from 'react-native-heroicons/outline'
 
 import { fetchSearchMovie, image342 } from '@/api/moviedb'
+import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { AppRoutesNavigationProps } from '@/routes'
 
 const { width, height } = Dimensions.get('window')
 
 export function Search() {
-  const [results, setResults] = useState([])
-  const navigation = useNavigation()
+  const [results, setResults] = useState([] as MoviesDataDTO[])
+  const navigation = useNavigation<AppRoutesNavigationProps>()
 
-  function handleSearch(value) {
+  function handleSearch(value: string) {
     if (value && value.length > 2) {
       fetchSearchMovie({
         query: value,
@@ -62,18 +64,19 @@ export function Search() {
             Results {results.length}
           </Text>
           <View className="flex-row flex-wrap justify-between">
-            {results.map((item, index) => {
+            {results.map(({ id = '', posterPath, title }, index) => {
               return (
                 <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate('movie', item)}
+                  onPress={() => navigation.navigate('movie', { id })}
                   key={index}
                 >
                   <View className="mb-4 space-y-2">
                     <Image
-                      source={{ uri: image342(item.poster_path) }}
+                      source={{ uri: image342(posterPath) }}
                       style={{ width: width * 0.44, height: height * 0.3 }}
+                      alt="profile"
                     />
-                    <Text className="ml-1 text-neutral-300">{item.title}</Text>
+                    <Text className="ml-1 text-neutral-300">{title}</Text>
                   </View>
                 </TouchableWithoutFeedback>
               )

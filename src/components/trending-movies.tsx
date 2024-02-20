@@ -10,6 +10,7 @@ import Carousel from 'react-native-snap-carousel'
 
 import { image500 } from '@/api/moviedb'
 import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { AppRoutesNavigationProps } from '@/routes'
 
 type TrendingMoviesProps = {
   data: MoviesDataDTO[]
@@ -23,9 +24,9 @@ type MovieCardProps = {
 const { width, height } = Dimensions.get('window')
 
 export function TrendingMovies({ data }: TrendingMoviesProps) {
-  const navigation = useNavigation()
-  function handleMovieList(item) {
-    navigation.navigate('movie', item)
+  const navigation = useNavigation<AppRoutesNavigationProps>()
+  function handleMovieList(id: string) {
+    navigation.navigate('movie', { id })
   }
   return (
     <View className="mb-8">
@@ -34,7 +35,7 @@ export function TrendingMovies({ data }: TrendingMoviesProps) {
         data={data}
         firstItem={1}
         renderItem={({ item }) => (
-          <MovieCard item={item} handleClick={() => handleMovieList(item)} />
+          <MovieCard item={item} handleClick={() => handleMovieList(item.id)} />
         )}
         inactiveSlideOpacity={0.6}
         sliderWidth={width}
@@ -49,9 +50,10 @@ const MovieCard = ({ item, handleClick }: MovieCardProps) => {
   return (
     <TouchableNativeFeedback onPress={handleClick}>
       <Image
-        source={{ uri: image500(item.poster_path) }}
+        source={{ uri: image500(item.posterPath) }}
         style={{ width: width * 0.6, height: height * 0.4 }}
         className="rounded-3xl"
+        alt="poster"
       />
     </TouchableNativeFeedback>
   )
