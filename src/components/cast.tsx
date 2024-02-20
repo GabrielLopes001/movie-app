@@ -1,11 +1,13 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
+import { image185 } from '@/api/moviedb'
+
 type CastProps = {
-  cast: number[]
-  navigation: () => void
+  cast: string[]
+  navigation?: () => void
 }
 
-export function Cast({ cast, navigation }: CastProps) {
+export function Cast({ cast = [], navigation }: CastProps) {
   return (
     <View className="my-4">
       <Text className="mx-4 mb-5 text-lg text-white"> Top Cast </Text>
@@ -15,17 +17,21 @@ export function Cast({ cast, navigation }: CastProps) {
             return (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate('person', person)}
                 className="mr-4 items-center"
+                onPress={() => navigation.navigate('person', person)}
               >
                 <View className="h-20 w-20 items-center overflow-hidden rounded-full border border-neutral-400">
                   <Image
                     className="h-24 w-20 rounded-2xl"
-                    source={require('../assets/movieImage.png')}
+                    source={{ uri: image185(person?.profile_path) }}
                   />
                 </View>
-                <Text className="mt-1 text-xs text-white">John doe</Text>
-                <Text className="mt-1 text-xs text-neutral-400">John doe</Text>
+                <Text className="mt-1 text-xs text-white">
+                  {person?.character}
+                </Text>
+                <Text className="mt-1 text-xs text-neutral-400">
+                  {person?.name}
+                </Text>
               </TouchableOpacity>
             )
           })}
