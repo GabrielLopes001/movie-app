@@ -1,18 +1,12 @@
 import { Text, View } from 'react-native'
 
-type ActorDetailsProps = {
-  name: string
-  place: string
-  popularity: string
-  department: string
-  birthday: string
-  biography: string
-  gender: number
-}
+import { PersonPropsDTO } from '@/dtos/movies/person-data-dto'
+
+type ActorDetailsProps = PersonPropsDTO
 
 export function ActorDetail({
   name,
-  place,
+  placeOfBirth,
   popularity,
   department,
   birthday,
@@ -22,13 +16,14 @@ export function ActorDetail({
   return (
     <View className="mt-6">
       <Text className="text-center text-3xl font-bold text-white">{name}</Text>
-      <Text className="text-center text-base  text-neutral-500">{place}</Text>
+      <Text className="text-center text-base  text-neutral-500">
+        {placeOfBirth}
+      </Text>
 
       <View className="mx-1 mt-6 flex-row items-center justify-between rounded-full bg-neutral-700 p-4">
         <View className="items-center border-r-2 border-r-neutral-400 px-2">
           <Text className="font-semibold text-white"> Gender</Text>
           <Text className="text-sm text-neutral-300">
-            {' '}
             {gender === 1 ? 'Female' : 'Masc'}
           </Text>
         </View>

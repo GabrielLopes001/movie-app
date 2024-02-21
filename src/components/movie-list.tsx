@@ -10,17 +10,18 @@ import {
 } from 'react-native'
 
 import { image185 } from '@/api/moviedb'
-import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { MovieDataDTO } from '@/dtos/movies/movies-data-dto'
+import { AppNavigationRoutesProps } from '@/routes'
 
 type MovieListProps = {
   titlePage: string
-  data: MoviesDataDTO[]
+  data: MovieDataDTO[]
 }
 
 const { width, height } = Dimensions.get('window')
 
 export function MovieList({ data, titlePage }: MovieListProps) {
-  const navigation = useNavigation()
+  const navigation = useNavigation<AppNavigationRoutesProps>()
   return (
     <View className="mb-8 space-y-4">
       <View className="mx-4 flex-row justify-between">
@@ -34,22 +35,21 @@ export function MovieList({ data, titlePage }: MovieListProps) {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {data.map((item, index) => {
+        {data.map(({ id, poster_path: posterPath, title }, index) => {
           return (
             <TouchableWithoutFeedback
               key={index}
-              onPress={() => navigation.push('movie', item)}
+              onPress={() => navigation.push('movie', { id })}
             >
               <View className="mr-4 space-y-1">
                 <Image
-                  source={{ uri: image185(item.poster_path) }}
+                  source={{ uri: image185(posterPath) }}
                   style={{ width: width * 0.33, height: height * 0.22 }}
                   className="rounded-3xl"
+                  alt="poster"
                 />
                 <Text className="ml-1 text-neutral-500">
-                  {item.title.length > 14
-                    ? item.title.slice(0, 14) + '...'
-                    : item.title}
+                  {title.length > 14 ? title.slice(0, 14) + '...' : title}
                 </Text>
               </View>
             </TouchableWithoutFeedback>

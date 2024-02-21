@@ -13,16 +13,18 @@ import { Cast } from '@/components/cast'
 import { Header } from '@/components/header'
 import { MovieDetails } from '@/components/movie-details'
 import { MovieList } from '@/components/movie-list'
-import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { MovieDataDTO } from '@/dtos/movies/movies-data-dto'
+import { PersonPropsDTO } from '@/dtos/movies/person-data-dto'
+import { AppNavigationRoutesProps } from '@/routes'
 
 const { width, height } = Dimensions.get('window')
 
 export function Movie() {
   const { params: item } = useRoute()
-  const navigation = useNavigation()
-  const [cast, setCast] = useState([])
-  const [similarmovies, setSimilarmovies] = useState([])
-  const [movie, setMovie] = useState({})
+  const navigation = useNavigation<AppNavigationRoutesProps>()
+  const [cast, setCast] = useState([] as PersonPropsDTO[])
+  const [similarmovies, setSimilarmovies] = useState([] as MovieDataDTO[])
+  const [movie, setMovie] = useState({} as MovieDataDTO)
 
   useEffect(() => {
     // console.log('item id', item?.id)
@@ -34,6 +36,7 @@ export function Movie() {
 
   async function getMovieDetail(id) {
     const data = await fetchMovieDetails(id)
+    // console.log(data)
     if (data) setMovie(data)
   }
 
@@ -61,6 +64,7 @@ export function Movie() {
           <Image
             source={{ uri: image500(movie?.poster_path) }}
             style={{ width, height: height * 0.55 }}
+            alt="poster"
           />
           <LinearGradient
             colors={['transparent', 'rgba(23,23,23,0.8)', 'rgba(23,23,23,1)']}
@@ -75,11 +79,14 @@ export function Movie() {
       <View style={{ marginTop: -(height * 0.09) }} className="space-y-3">
         <MovieDetails
           title={movie?.title}
-          description={movie?.overview}
+          overview={movie?.overview}
           status={movie?.status}
-          releasedData={movie?.release_date?.split('-')[0]}
+          release_date={movie?.release_date?.split('-')[0]}
           duration={movie?.runtime}
           genres={movie?.genres}
+          poster_path={''}
+          runtime={''}
+          id={0}
         />
       </View>
 

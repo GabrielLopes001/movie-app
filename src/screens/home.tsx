@@ -15,20 +15,15 @@ import {
 } from '@/api/moviedb'
 import { MovieList } from '@/components/movie-list'
 import { TrendingMovies } from '@/components/trending-movies'
-import { MoviesDataDTO } from '@/dtos/movies/movies-data-dto'
+import { MovieDataDTO } from '@/dtos/movies/movies-data-dto'
+import { AppNavigationRoutesProps } from '@/routes'
 
 export function Home() {
-  const [trending, setTrending] = useState<MoviesDataDTO[]>(
-    [] as MoviesDataDTO[],
-  )
-  const [upcoming, setUpcoming] = useState<MoviesDataDTO[]>(
-    [] as MoviesDataDTO[],
-  )
-  const [toprated, setToprated] = useState<MoviesDataDTO[]>(
-    [] as MoviesDataDTO[],
-  )
+  const [trending, setTrending] = useState<MovieDataDTO[]>([] as MovieDataDTO[])
+  const [upcoming, setUpcoming] = useState<MovieDataDTO[]>([] as MovieDataDTO[])
+  const [toprated, setToprated] = useState<MovieDataDTO[]>([] as MovieDataDTO[])
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<AppNavigationRoutesProps>()
 
   useEffect(() => {
     getTrendingMovies()

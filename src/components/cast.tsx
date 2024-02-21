@@ -1,9 +1,10 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import { image185 } from '@/api/moviedb'
+import { PersonPropsDTO } from '@/dtos/movies/person-data-dto'
 
 type CastProps = {
-  cast: string[]
+  cast: PersonPropsDTO[]
   navigation?: () => void
 }
 
@@ -24,6 +25,7 @@ export function Cast({ cast = [], navigation }: CastProps) {
                   <Image
                     className="h-24 w-20 rounded-2xl"
                     source={{ uri: image185(person?.profile_path) }}
+                    alt="profile"
                   />
                 </View>
                 <Text className="mt-1 text-xs text-white">

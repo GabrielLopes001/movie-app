@@ -1,19 +1,14 @@
 import { Text, View } from 'react-native'
 
-type MovieDetailsProps = {
-  title: string
-  description: string
-  status: string
-  releasedData: string
-  duration: string
-  genres: string[]
-}
+import { MovieDataDTO } from '@/dtos/movies/movies-data-dto'
+
+type MovieDetailsProps = MovieDataDTO
 
 export function MovieDetails({
   title,
-  description,
+  overview,
   status,
-  releasedData,
+  release_date: releasedData,
   duration,
   genres = [],
 }: MovieDetailsProps) {
@@ -35,7 +30,7 @@ export function MovieDetails({
         )
       })}
       <Text className="mx-4 text-center tracking-wide text-neutral-400">
-        {description}
+        {overview}
       </Text>
     </View>
   )

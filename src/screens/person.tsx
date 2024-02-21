@@ -7,25 +7,27 @@ import { fetchPersonDetails, fetchPersonMovies, image342 } from '@/api/moviedb'
 import { ActorDetail } from '@/components/actor-detail'
 import { Header } from '@/components/header'
 import { MovieList } from '@/components/movie-list'
+import { MovieDataDTO } from '@/dtos/movies/movies-data-dto'
+import { PersonPropsDTO } from '@/dtos/movies/person-data-dto'
 
 const { width, height } = Dimensions.get('window')
 
 export function Person() {
-  const [personMovies, setPersonMovies] = useState([])
-  const [person, setPerson] = useState({})
+  const [personMovies, setPersonMovies] = useState([] as MovieDataDTO[])
+  const [person, setPerson] = useState({} as PersonPropsDTO)
   const { params: item } = useRoute()
 
   useEffect(() => {
-    getPersonDetails(item.id)
-    getPersonMovies(item.id)
+    getPersonDetails(item?.id)
+    getPersonMovies(item?.id)
   }, [item])
 
-  async function getPersonDetails(id) {
+  async function getPersonDetails(id: string) {
     const data = await fetchPersonDetails(id)
     if (data) setPerson(data)
   }
 
-  async function getPersonMovies(id) {
+  async function getPersonMovies(id: string) {
     const data = await fetchPersonMovies(id)
     if (data && data.cast) setPersonMovies(data.cast)
   }
@@ -33,7 +35,7 @@ export function Person() {
     <ScrollView
       className="flex-1 bg-neutral-900"
       contentContainerStyle={{ paddingBottom: 20 }}
-      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
     >
       <SafeAreaView>
         <Header />
@@ -52,18 +54,22 @@ export function Person() {
           <Image
             source={{ uri: image342(person.profile_path) }}
             style={{ height: height * 0.43, width: width * 0.74 }}
+            alt="profile"
           />
         </View>
       </View>
 
       <ActorDetail
-        name={person?.name}
-        place={person.place_of_birth}
+        name={person.name}
+        placeOfBirth={person.placeOfBirth}
         popularity={person.popularity}
         department={person.known_for_department}
         birthday={person.birthday}
         biography={person.biography}
         gender={person.gender}
+        known_for_department={''}
+        character={''}
+        profile_path={''}
       />
 
       <MovieList titlePage="Movies" data={personMovies} />
